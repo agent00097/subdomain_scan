@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-# require 'timeout'
-# require 'socket'
 require 'net/ping'
+require 'net/http'
 
 
 
@@ -16,7 +15,7 @@ end
 input_array = ARGV
 
 def error_usage_message
-    puts "USAGE: website-scraper [options] [Target IP]"
+    puts "USAGE: website-scraper [options] [Host]"
     exit
 end
 
@@ -29,6 +28,10 @@ if arguments_number == 0
 end
 
 website_name = input_array[0].to_s
-puts website_name
 
-puts up?(website_name)
+if (up?(website_name) == false)
+  puts "Host you mentioned is unreachable"
+end
+
+source = Net::HTTP.get(website_name, '/index.html')
+puts source
